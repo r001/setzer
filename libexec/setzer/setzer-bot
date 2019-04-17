@@ -43,9 +43,13 @@ if [[ -e $SETZER_CONF ]]; then
 fi
 
 # check we're connected to ethereum
-while [ "$(setzer connected)" != "true" ]; do
-  log "Not connected to Ethereum, retry in 10 seconds..."
-  sleep 10
+while [[ "$(setzer connected)" != "true" ]]; do
+  for PORT in ${RPC_PORTS:-8545}; do
+    export ETH_RPC_PORT=$PORT
+    log "Trying on rpc port $ETH_RPC_PORT."
+    [[ "$(setzer connected)" == "true" ]] && ok=true && break
+  done
+  [[ $ok != "true" ]] && log "Not connected to Ethereum, retry in 10 seconds..." && sleep 10
 done
 
 [[ $ETH_FROM ]] || errors+=("No default account set. Please set it via ETH_FROM ")
