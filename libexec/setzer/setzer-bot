@@ -43,6 +43,7 @@ if [[ -e $SETZER_CONF ]]; then
 fi
 
 # check we're connected to ethereum
+unset ETH_RPC_URL
 while [[ "$(setzer connected)" != "true" ]]; do
   unset ETH_RPC_URL
   for port in ${RPC_PORTS:-8545}; do
