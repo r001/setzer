@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+json=$(curl -sS "https://api.coinmarketcap.com/v1/ticker/diamond-platform-token/")
+price=$(jshon <<<"$json" -e 0 -e price_usd -u)
+echo "$price"
